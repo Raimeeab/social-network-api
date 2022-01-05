@@ -1,0 +1,28 @@
+{
+  "name": "social-network-api",
+  "version": "1.0.0",
+  "description": "A social network API where users can share their thoughts, react to friend's thoughts and create a friend list.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Raimeeab/social-network-api.git"
+  },
+  "keywords": [],
+  "author": "Raimee-Abbassi",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Raimeeab/social-network-api/issues"
+  },
+  "homepage": "https://github.com/Raimeeab/social-network-api#readme",
+  "dependencies": {
+    "express": "^4.17.2",
+    "mongodb": "^4.2.2",
+    "mongoose": "^6.1.5"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  }
+}
