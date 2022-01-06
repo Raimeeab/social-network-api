@@ -2,7 +2,6 @@
 
 # Social Network API
 ---
-
 ## Table of Content 
 
 * [Description](#description)

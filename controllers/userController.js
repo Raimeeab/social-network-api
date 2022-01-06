@@ -56,7 +56,7 @@ const userController = {
 
   // UPDATE a User
   updateUser(req, res) {
-    User.findOneAndUpdate({ _id: req.params.id }, req.body)
+    User.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true })
       .then((dbUserData) => {
         if (!dbUserData) {
           res.status(404).json({
@@ -80,19 +80,18 @@ const userController = {
   addFriend(req, res) {
     User.findByIdAndUpdate(
       req.params.id,
-      { $push: { friends: req.params.friendId }},
-      { new: true },
+      { $push: { friends: req.params.friendId } },
+      { new: true }
     )
-      .then((dbUserData) => {
-        if (!dbUserData) {
+      .then((dbFriendData) => {
+        if (!dbFriendData) {
           res.status(404).json({
             message: "Error: User does not exist.",
           });
         } else {
           res.status(200).json({
             message: "Friends updated successfully.",
-            // TODO: fix to show updated changes
-            user: dbUserData,
+            user: dbFriendData,
           });
         }
       })
