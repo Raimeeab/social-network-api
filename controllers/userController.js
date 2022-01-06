@@ -40,12 +40,20 @@ const userController = {
     User.findOneAndDelete({ _id: req.params.id })
       .then((dbUserData) => {
         if (!dbUserData) {
-          res.status(404).json({
+          return res.status(404).json({
             message: "Error: User does not exist.",
           });
         }
-        res.status(200).json({
-          message: "User deleted successfully.",
+        Thought.deleteMany({username: dbUserData.username})
+        .then((result) => {
+          res.status(200).json({
+            message: "User deleted successfully.",
+          });
+        })
+        .catch((thoughtsError) => {
+          res.status(500).json({
+            message: "An error occured when deleting thoughts"
+          });
         });
       })
       .catch((err) => {
@@ -116,7 +124,6 @@ const userController = {
         } else {
           res.status(200).json({
             message: "Friend deleted successfully.",
-            // TODO: fix to show updated changes inside of previous results
             user: dbFriendData,
           });
         }

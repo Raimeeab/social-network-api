@@ -14,7 +14,12 @@ const thoughtController = {
   // GET Thought by ID
   thoughtById(req, res) {
     Thought.findOne({ _id: req.params.id })
-      .then((dbThoughtData) => res.json(dbThoughtData))
+      .then((dbThoughtData) => {
+        !dbThoughtData 
+          ? res.status(404).json({
+            message: "Thought does not exist" })
+          : res.json(dbThoughtData)
+      })
       .catch((err) => {
         console.log("An error has occurred:", err);
         res.status(500).json(err);

@@ -21,6 +21,7 @@
   "homepage": "https://github.com/Raimeeab/social-network-api#readme",
   "dependencies": {
     "express": "^4.17.2",
+    "moment": "^2.29.1",
     "mongodb": "^4.2.2",
     "mongoose": "^6.1.5",
     "mongoose-validator": "^2.1.0"
