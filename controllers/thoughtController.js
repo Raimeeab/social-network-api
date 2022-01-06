@@ -32,6 +32,25 @@ const thoughtController = {
         });
     }, 
 
+    // DELETE a Thought 
+    deleteThought(req, res) {
+        Thought.findOneAndDelete({ _id: req.params.id })
+            .then(dbUserData => {
+                if(!dbUserData) {
+                    res.status(404).json({
+                        message: 'Error: Thought does not exist.'
+                    });
+                };
+                res.status(200).json({
+                    message:'Thought deleted successfully.'
+                });
+            })
+            .catch(err => {
+                console.log('An error ha occurred: ', err);
+                res.status(500).json(err);
+            });
+    },
+
 };
 
 module.exports = thoughtController;
