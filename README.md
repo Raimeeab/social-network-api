@@ -31,7 +31,7 @@ This is a back end application for a Social Network created using a configured w
 
 <a name="installation"></a>
 ## ⚙️ Installation 
-*You can download a step-by-step tutorial [here]() by clicking on the `view raw` link*
+*You can download a step-by-step tutorial [here](https://github.com/Raimeeab/social-network-api/blob/main/assets/demos/socail-network-api%20walkthrough.mov) by clicking on the `view raw` link*
 
 1. Git clone this repository onto your local machine and navigate to the file on your terminal. *This can also be done by opening the file on Visual Studios and running it through the intergated terminal.*
 
