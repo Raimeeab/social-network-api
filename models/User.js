@@ -24,23 +24,24 @@ const userSchema = new Schema(
             validate: emailValidator,
             required: [true, "Email required"]
         },
-        thought: [{
+        thoughts: [{
             type: Schema.Types.ObjectId,
-            ref: thoughtSchema
+            ref: 'Thought'
         }],
         friends: [{
             type: Schema.Types.ObjectId,
-            ref: 'user'
+            ref: 'User'
         }],
     },
     {
         toJSON: {
-          getters: true,
+          virtuals: true,
         },
+        id: false,
     },
 );
 
-const User = model('user', userSchema);
+const User = model('User', userSchema);
 
 userSchema.virtual('friendCount').get(function() {
     return this.friends.length;

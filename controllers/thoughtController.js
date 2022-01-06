@@ -5,12 +5,6 @@ const thoughtController = {
     // GET all Thoughts 
     allThoughts(req, res) {
         Thought.find({})
-            .populate({
-                path: 'user',
-                select: '-__v'
-            })
-            .select('-__v')
-            .sort({ _id: -1 })
             .then(dbThoughtData => res.json(dbThoughtData))
             .catch(err => {
                 console.log('An error has occurred: ', err);
@@ -20,13 +14,7 @@ const thoughtController = {
 
     // GET Thought by ID 
     thoughtById(req, res) {
-        Thought.findOne({ _id: params.id })
-            .populate({
-                path: 'user', 
-                select: '-__v'
-            })
-            .select('-__v')
-            .sort({ _id: -1 })
+        Thought.findOne({ _id: req.params.id })
             .then(dbThoughtData => res.json(dbThoughtData))
             .catch(err => {
                 console.log('An error has occurred:', err);
@@ -35,12 +23,15 @@ const thoughtController = {
     }, 
 
     // POST a Thought
-    // createThought(req, res) {
-    //     Thought.create(body)
-    //     .then(({ _id }) => {
+    createThought(req, res) {
+        Thought.create(req.body)
+        .then(dbThoughtData => res.json(dbThoughtData))
+        .catch(err => {
+            console.log('An error has occurred: ', err);
+            res.status(500).json(err);
+        });
+    }, 
 
-    //     })
-    // }
 };
 
 module.exports = thoughtController;

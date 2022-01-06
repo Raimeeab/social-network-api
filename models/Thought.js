@@ -1,51 +1,14 @@
 const { Schema, model, Types } = require('mongoose');
-const validate = require('mongoose-validator');
 const moment = require('moment');
-
-// Validate the min and max length of a thought/ reaction string 
-const lengthValidator = [
-    validate({
-      validator: 'isLength',
-      arguments: [1, 280],
-      message: 'Thought should be between 1 and 280 characters'
-    })
-];
-
-const reactionSchema = new Schema(
-    {
-      reactionId: {
-        type: Schema.Types.ObjectId,
-        default: () => new Types.ObjectId()
-      },
-      reactionBody: {
-        type: String,
-        required: true,
-        trim: true,
-        validate: lengthValidator,
-      },
-      username: {
-        type: String,
-        required: true,
-      },
-      createdAt: {
-        type: Date,
-        default: Date.now,
-        get: createdAtVal => moment(createdAtVal).format('MMM DD, YYYY [at] hh:mm a')
-      }
-    },
-    {
-      toJSON: {
-        getters: true
-      }
-    }
-  );
+const reactionSchema = require('./Reaction');
 
 const thoughtSchema = new Schema(
     {
         thoughtText: {
             type: String, 
             required: true, 
-            validate: lengthValidator,
+            minlength: 1,
+            maxlength: 280
         }, 
         createdAt: {
             type: Date, 
@@ -62,10 +25,11 @@ const thoughtSchema = new Schema(
         toJSON: {
           getters: true,
         },
+        id: false,
     },
 );
 
-const Thought = model('thought', thoughtSchema);
+const Thought = model('Thought', thoughtSchema);
 
 thoughtSchema.virtual('reactionCount').get(function() {
     return this.reactions.length;
