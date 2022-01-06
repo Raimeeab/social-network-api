@@ -35,7 +35,7 @@ const userController = {
       });
   },
 
-  // DELETE a User && DELETE associated Thought(s)
+  // DELETE a User
   deleteUser(req, res) {
     User.findOneAndDelete({ _id: req.params.id })
       .then((dbUserData) => {
@@ -44,17 +44,17 @@ const userController = {
             message: "Error: User does not exist.",
           });
         }
-        Thought.deleteMany({ username: dbUserData.username })
-          .then((result) => {
-            res.status(200).json({
-              message: "User deleted successfully.",
-            });
-          })
-          .catch((thoughtsError) => {
-            res.status(500).json({
-              message: "An error occured when deleting thoughts",
-            });
+        Thought.deleteMany({username: dbUserData.username})
+        .then((result) => {
+          res.status(200).json({
+            message: "User deleted successfully.",
           });
+        })
+        .catch((thoughtsError) => {
+          res.status(500).json({
+            message: "An error occured when deleting thoughts"
+          });
+        });
       })
       .catch((err) => {
         console.log("An error has occurred: ", err);
@@ -103,7 +103,7 @@ const userController = {
         }
       })
       .catch((err) => {
-        console.log("An error ha occurred: ", err);
+        console.log("An error has occurred: ", err);
         res.status(500).json(err);
       });
   },
@@ -116,14 +116,16 @@ const userController = {
       { new: true }
     )
       .then((dbFriendData) => {
-        !dbFriendData
-          ? res.status(404).json({
-              message: "Error: User does not exist.",
-            })
-          : res.status(200).json({
-              message: "Friend deleted successfully.",
-              user: dbFriendData,
-            });
+        if (!dbFriendData) {
+          res.status(404).json({
+            message: "Error: User does not exist.",
+          });
+        } else {
+          res.status(200).json({
+            message: "Friend deleted successfully.",
+            user: dbFriendData,
+          });
+        }
       })
       .catch((err) => {
         console.log("An error has occurred: ", err);
