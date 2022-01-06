@@ -26,6 +26,7 @@ This is a back end application for a Social Network created using a configured w
 - Express.js
 - MongoDB
 - Mongoose
+- Mongoose validator
 - Moment.js
 
 <a name="installation"></a>
