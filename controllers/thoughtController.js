@@ -15,10 +15,11 @@ const thoughtController = {
   thoughtById(req, res) {
     Thought.findOne({ _id: req.params.id })
       .then((dbThoughtData) => {
-        !dbThoughtData 
+        !dbThoughtData
           ? res.status(404).json({
-            message: "Thought does not exist" })
-          : res.json(dbThoughtData)
+              message: "Thought does not exist",
+            })
+          : res.json(dbThoughtData);
       })
       .catch((err) => {
         console.log("An error has occurred:", err);
@@ -33,11 +34,11 @@ const thoughtController = {
         // ref to user and update user
         return User.findByIdAndUpdate(
           req.body.userId,
-          { $push: { thoughts: dbThoughtData._id }},
+          { $push: { thoughts: dbThoughtData._id } },
           { new: true }
         );
-      }). 
-      then((dbUserData) => res.json(dbUserData))
+      })
+      .then((dbUserData) => res.json(dbUserData))
       .catch((err) => {
         console.log("An error has occurred: ", err);
         res.status(500).json(err);
@@ -46,36 +47,34 @@ const thoughtController = {
 
   // UPDATE a Thought
   updateThought({ params, body }, res) {
-    Thought.findOneAndUpdate(
-        { _id: params.id }, 
-        body,
-        { new: true, runValidators: true }
-    )
-    .then(updatedThought => {
-        if (!updatedThought) {
-            return res.status(404).json({ message: 'No thought with this ID!' });
-        } else {
-            res.json(updatedThought);
-        };
+    Thought.findOneAndUpdate({ _id: params.id }, body, {
+      new: true,
+      runValidators: true,
     })
-    .catch(err => res.json(err));
-},
+      .then((updatedThought) => {
+        if (!updatedThought) {
+          return res.status(404).json({ message: "No thought with this ID!" });
+        } else {
+          res.json(updatedThought);
+        }
+      })
+      .catch((err) => res.json(err));
+  },
 
   // DELETE a Thought
   deleteThought(req, res) {
     Thought.findOneAndDelete({ _id: req.params.id })
       .then((dbThoughtData) => {
-        if (!dbThoughtData) {
-          res.status(404).json({
-            message: "Error: Thought does not exist.",
-          });
-        }
-        res.status(200).json({
-          message: "Thought deleted successfully.",
-        });
+        !dbThoughtData
+          ? res.status(404).json({
+              message: "Error: Thought does not exist.",
+            })
+          : res.status(200).json({
+              message: "Thought deleted successfully.",
+            });
       })
       .catch((err) => {
-        console.log("An error ha occurred: ", err);
+        console.log("An error has occurred: ", err);
         res.status(500).json(err);
       });
   },
@@ -88,36 +87,34 @@ const thoughtController = {
       { new: true, runValidators: true }
     )
       .then((dbThoughtData) => {
-        if (!dbThoughtData) {
-          res.status(404).json({ message: "No thought with this ID!" });
-          return;
-        }
-        res.json(dbThoughtData);
+        !dbThoughtData
+          ? res.status(404).json({ message: "No thought with this ID!" })
+          : res.json({
+              message: "Successfully added reaction",
+              dbThoughtData,
+            });
       })
       .catch((err) => res.json(err));
   },
 
-    // DELETE a reaction
-    deleteReaction(req, res) {
-        Thought.findOneAndUpdate(
-            { _id: req.params.thoughtId },
-            { $pull: { reactions: { reactionId: req.params.reactionId }} 
-        })
-        .then((dbThoughtData) => {
-            if (!dbThoughtData) {
-              res.status(404).json({
-                message: "Error: Thought does not exist.",
-              });
-            }
-            res.status(200).json({
-              message: "Thought deleted successfully.",
-            });
-          })
-          .catch((err) => {
-            console.log("An error ha occurred: ", err);
-            res.status(500).json(err);
-          });
-    }  
+  // DELETE a reaction
+  deleteReaction(req, res) {
+    Thought.findOneAndUpdate(
+      { _id: req.params.thoughtId },
+      { $pull: { reactions: { reactionId: req.params.reactionId } } }
+    )
+      .then((dbThoughtData) => {
+        !dbThoughtData 
+          ? res.status(404).json({
+            message: "Error: Thought does not exist."})
+          : res.status(200).json({
+            message: "Thought deleted successfully."});
+      })
+      .catch((err) => {
+        console.log("An error has occurred: ", err);
+        res.status(500).json(err);
+      });
+  },
 };
 
 module.exports = thoughtController;
