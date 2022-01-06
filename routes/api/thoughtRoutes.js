@@ -23,7 +23,7 @@ router
     .put(updateThought)
     .delete(deleteThought);
 
-// http://localhost:3001/api/thoughts/:id/reactions/
+// http://localhost:3001/api/thoughts/:id/reactions
 router
     .route('/:thoughtId/reactions')
     .post(createReaction)

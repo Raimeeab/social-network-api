@@ -39,13 +39,13 @@ This is a back end application for a Social Network created using a configured w
 
 2. In order for the app to function correctly, ensure you have the latest or most stable version of Node.js. Next, run `npm install` to download all the required dependencies
 
-![install]()
+![install](assets/demos/install.gif)
 
 5. To start the application, run:
 
     - `npm run start`
 
-![npm-start]()
+![npm-start](assets/demos/npm-start.gif)
 
 <a name="usage"></a>
 ## 🖥 Usage 
