@@ -28,15 +28,35 @@ const thoughtController = {
         // ref to user and update user
         return User.findByIdAndUpdate(
           req.body.userId,
-          {
-            $push: { thoughts: dbThoughtData._id },
-          },
+          { $push: { thoughts: dbThoughtData._id }},
           { new: true }
         );
       }). 
       then((dbUserData) => res.json(dbUserData))
       .catch((err) => {
         console.log("An error has occurred: ", err);
+        res.status(500).json(err);
+      });
+  },
+
+  // UPDATE a Thought
+  updateThought(req, res) {
+    User.findOneAndUpdate({ _id: req.params.id }, req.body)
+      .then((dbThoughtData) => {
+        if (!dbThoughtData) {
+          res.status(404).json({
+            message: "Error: Thought does not exist.",
+          });
+        } else {
+          res.status(200).json({
+            message: "Thought updated successfully.",
+            // TODO: fix to show updated changes
+            user: dbThoughtData,
+          });
+        }
+      })
+      .catch((err) => {
+        console.log("An error ha occurred: ", err);
         res.status(500).json(err);
       });
   },
@@ -76,6 +96,28 @@ const thoughtController = {
       })
       .catch((err) => res.json(err));
   },
+
+    // DELETE a reaction
+    deleteReaction(req, res) {
+        Thought.findOneAndUpdate(
+            { _id: req.params.thoughtId },
+            { $pull: { reactions: { reactionId: req.params.reactionId }} 
+        })
+        .then((dbThoughtData) => {
+            if (!dbThoughtData) {
+              res.status(404).json({
+                message: "Error: Thought does not exist.",
+              });
+            }
+            res.status(200).json({
+              message: "Thought deleted successfully.",
+            });
+          })
+          .catch((err) => {
+            console.log("An error ha occurred: ", err);
+            res.status(500).json(err);
+          });
+    }  
 };
 
 module.exports = thoughtController;

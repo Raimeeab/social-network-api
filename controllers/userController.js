@@ -18,12 +18,6 @@ const userController = {
   // GET User by ID
   userById(req, res) {
     User.findOne({ _id: req.params.id })
-      .populate({
-        path: "Thought",
-        select: "-__v",
-      })
-      .select("-__v")
-      .sort({ _id: -1 })
       .then((dbUserData) => res.json(dbUserData))
       .catch((err) => {
         console.log("An error ha occurred: ", err);
@@ -86,10 +80,8 @@ const userController = {
   addFriend(req, res) {
     User.findByIdAndUpdate(
       req.params.id,
-      { $push: { friends: req.params.friendId } },
-      {
-        new: true,
-      }
+      { $push: { friends: req.params.friendId }},
+      { new: true },
     )
       .then((dbUserData) => {
         if (!dbUserData) {
@@ -113,27 +105,20 @@ const userController = {
   // REMOVE a friend
   deleteFriend(req, res) {
     User.findByIdAndUpdate(
-      {
-        _id: req.params.id,
-      },
-      {
-        // Removes an instance from an exisiting array
-        $pull: { friends: req.params.friends },
-      },
-      {
-        new: true,
-      }
+      { _id: req.params.id },
+      { $pull: { friends: req.params.friendId } },
+      { new: true }
     )
-      .then((dbUserData) => {
-        if (!dbUserData) {
+      .then((dbFriendData) => {
+        if (!dbFriendData) {
           res.status(404).json({
             message: "Error: User does not exist.",
           });
         } else {
           res.status(200).json({
-            message: "Friend updated successfully.",
-            // TODO: fix to show updated changes
-            user: dbUserData,
+            message: "Friend deleted successfully.",
+            // TODO: fix to show updated changes inside of previous results
+            user: dbFriendData,
           });
         }
       })
