@@ -35,8 +35,8 @@ const thoughtController = {
     // DELETE a Thought 
     deleteThought(req, res) {
         Thought.findOneAndDelete({ _id: req.params.id })
-            .then(dbUserData => {
-                if(!dbUserData) {
+            .then(dbThoughtData => {
+                if(!dbThoughtData) {
                     res.status(404).json({
                         message: 'Error: Thought does not exist.'
                     });
@@ -49,6 +49,23 @@ const thoughtController = {
                 console.log('An error ha occurred: ', err);
                 res.status(500).json(err);
             });
+    },
+
+    // POST a reaction 
+    createReaction ({ params, body}, res) {
+        Thought.findOneAndUpdate(
+            { _id: params.thoughtId },
+            { $push: { reactions: body } },
+            { new: true, runValidators: true }
+        )
+        .then(dbThoughtData => {
+            if (!dbThoughtData) {
+                res.status(404).json({ message: 'No thought with this ID!' });
+                return;
+            }
+            res.json(dbThoughtData)
+        })
+        .catch(err => res.json(err));
     },
 
 };

@@ -44,7 +44,7 @@ const userController = {
             });
     },
 
-    // DEL a User 
+    // DELETE a User 
     deleteUser(req, res) {
         User.findOneAndDelete({ _id: req.params.id })
             .then(dbUserData => {
