@@ -17,7 +17,7 @@
 ## 📝 Description
 This is a back end application for a Social Network created using a configured working Express API & mongoose ODM to interact with a mongoDB database. MongoDB is a popular choice for many social networks due to its speed with larger amounts of data and flexibility with unstructured data. Due to their prevalence, the aim of this application is to demonstrate my understanding of how to build and structure the API of these networks. 
 
-![app-demo]()
+![app-demo](assets/demos/demo.gif)
 
 <a name="technologies"></a>
 ## 🕹 Technologies used 
