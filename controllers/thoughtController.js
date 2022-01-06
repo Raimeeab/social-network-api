@@ -104,11 +104,13 @@ const thoughtController = {
       { $pull: { reactions: { reactionId: req.params.reactionId } } }
     )
       .then((dbThoughtData) => {
-        !dbThoughtData 
+        !dbThoughtData
           ? res.status(404).json({
-            message: "Error: Thought does not exist."})
+              message: "Error: Thought does not exist.",
+            })
           : res.status(200).json({
-            message: "Thought deleted successfully."});
+              message: "Thought deleted successfully.",
+            });
       })
       .catch((err) => {
         console.log("An error has occurred: ", err);

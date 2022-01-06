@@ -10,7 +10,7 @@ const userController = {
       .sort({ _id: -1 })
       .then((dbUserData) => res.json(dbUserData))
       .catch((err) => {
-        console.log("An error ha occurred: ", err);
+        console.log("An error has occurred: ", err);
         res.status(500).json(err);
       });
   },
@@ -20,7 +20,7 @@ const userController = {
     User.findOne({ _id: req.params.id })
       .then((dbUserData) => res.json(dbUserData))
       .catch((err) => {
-        console.log("An error ha occurred: ", err);
+        console.log("An error has occurred: ", err);
         res.status(500).json(err);
       });
   },
@@ -35,7 +35,7 @@ const userController = {
       });
   },
 
-  // DELETE a User
+  // DELETE a User && DELETE associated Thought(s)
   deleteUser(req, res) {
     User.findOneAndDelete({ _id: req.params.id })
       .then((dbUserData) => {
@@ -44,20 +44,20 @@ const userController = {
             message: "Error: User does not exist.",
           });
         }
-        Thought.deleteMany({username: dbUserData.username})
-        .then((result) => {
-          res.status(200).json({
-            message: "User deleted successfully.",
+        Thought.deleteMany({ username: dbUserData.username })
+          .then((result) => {
+            res.status(200).json({
+              message: "User deleted successfully.",
+            });
+          })
+          .catch((thoughtsError) => {
+            res.status(500).json({
+              message: "An error occured when deleting thoughts",
+            });
           });
-        })
-        .catch((thoughtsError) => {
-          res.status(500).json({
-            message: "An error occured when deleting thoughts"
-          });
-        });
       })
       .catch((err) => {
-        console.log("An error ha occurred: ", err);
+        console.log("An error has occurred: ", err);
         res.status(500).json(err);
       });
   },
@@ -73,13 +73,12 @@ const userController = {
         } else {
           res.status(200).json({
             message: "User updated successfully.",
-            // TODO: fix to show updated changes
             user: dbUserData,
           });
         }
       })
       .catch((err) => {
-        console.log("An error ha occurred: ", err);
+        console.log("An error has occurred: ", err);
         res.status(500).json(err);
       });
   },
@@ -117,19 +116,17 @@ const userController = {
       { new: true }
     )
       .then((dbFriendData) => {
-        if (!dbFriendData) {
-          res.status(404).json({
-            message: "Error: User does not exist.",
-          });
-        } else {
-          res.status(200).json({
-            message: "Friend deleted successfully.",
-            user: dbFriendData,
-          });
-        }
+        !dbFriendData
+          ? res.status(404).json({
+              message: "Error: User does not exist.",
+            })
+          : res.status(200).json({
+              message: "Friend deleted successfully.",
+              user: dbFriendData,
+            });
       })
       .catch((err) => {
-        console.log("An error ha occurred: ", err);
+        console.log("An error has occurred: ", err);
         res.status(500).json(err);
       });
   },
